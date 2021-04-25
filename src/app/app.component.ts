@@ -1,4 +1,5 @@
 import { Component, VERSION } from "@angular/core";
+import { AuthenticationService } from "./shared/authentication.service";
 import { Book } from "./shared/book";
 
 //Komponente wird angezeigt, wenn sie einen Tag <my-app> findet --> index.html
@@ -8,18 +9,17 @@ import { Book } from "./shared/book";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  listOn = true;
-  detailsOn = false;
-  book: Book;
+  constructor(private authService: AuthenticationService) {}
 
-  showList() {
-    this.listOn = true;
-    this.detailsOn = false;
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 
-  showDetails(book: Book) {
-    this.book = book;
-    this.listOn = false;
-    this.detailsOn = true;
+  getLoginLabel() {
+    if (this.isLoggedIn()) {
+      return "Logout";
+    } else {
+      return "Login";
+    }
   }
 }

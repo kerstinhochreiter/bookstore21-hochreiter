@@ -82,7 +82,7 @@ export class BookFormComponent implements OnInit {
       }
     }
   }
-
+  //formarray
   buildThumbnailsArray() {
     this.images = this.fb.array([]);
     for (let img of this.book.images) {
@@ -95,6 +95,7 @@ export class BookFormComponent implements OnInit {
     }
   }
 
+  //dynamisch mit + Button können beliebig viele bilder angelegt werden
   addThumbnailControl() {
     this.images.push(this.fb.group({ url: null, title: null }));
   }

@@ -9,9 +9,13 @@ import { BookDetailsComponent } from "./book-details/book-details.component";
 import { BookStoreService } from "./shared/book-store.service";
 import { HomeComponent } from "./home/home.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SearchComponent } from "./search/search.component";
-import { BookFormComponent } from './book-form/book-form.component';
+import { BookFormComponent } from "./book-form/book-form.component";
+import { LoginComponent } from "./login/login.component";
+import { AuthenticationService } from "./shared/authentication.service";
+import { TokenInterceptorService } from "./shared/token-interceptor.service";
+import { JwtInterceptorService } from "./shared/jwt.interceptor.service";
 
 @NgModule({
   imports: [
@@ -27,9 +31,23 @@ import { BookFormComponent } from './book-form/book-form.component';
     BookDetailsComponent,
     HomeComponent,
     SearchComponent,
-    BookFormComponent
+    BookFormComponent,
+    LoginComponent
   ],
   bootstrap: [AppComponent],
-  providers: [BookStoreService]
+  providers: [
+    BookStoreService,
+    AuthenticationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptorService,
+      multi: true
+    }
+  ]
 })
 export class AppModule {}
